@@ -2,6 +2,7 @@
 
 namespace Tsrgtm\MediaLibrary\Filament\Pages;
 
+use Filament\Panel;
 use Tsrgtm\MediaLibrary\Filament\Pages\MediaLibrary\BaseMediaLibraryPage;
 use Tsrgtm\MediaLibrary\MediaLibraryPlugin;
 use Tsrgtm\MediaLibrary\Models\MediaFolder;
@@ -10,7 +11,7 @@ class MediaTrashFolder extends BaseMediaLibraryPage
 {
     protected static bool $shouldRegisterNavigation = false;
 
-    public static function getSlug(): string
+    public static function getSlug(?Panel $panel = null): string
     {
         try {
             $baseSlug = MediaLibraryPlugin::get()->getSlug() ?? 'media-library';

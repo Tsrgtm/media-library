@@ -3,6 +3,7 @@
 namespace Tsrgtm\MediaLibrary\Filament\Pages;
 
 use BackedEnum;
+use Filament\Panel;
 use Tsrgtm\MediaLibrary\Filament\Pages\MediaLibrary\BaseMediaLibraryPage;
 use Tsrgtm\MediaLibrary\MediaLibraryPlugin;
 use UnitEnum;
@@ -45,7 +46,7 @@ class MediaLibrary extends BaseMediaLibraryPage
         }
     }
 
-    public static function getSlug(): string
+    public static function getSlug(?Panel $panel = null): string
     {
         try {
             return MediaLibraryPlugin::get()->getSlug() ?? 'media-library';
