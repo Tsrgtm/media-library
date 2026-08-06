@@ -1,0 +1,76 @@
+{
+    "name": "tsrgtm/media-library",
+    "description": "Advanced Laravel media library and Filament 5 plugin with a reusable media picker field, resumable uploads, folders, tags, responsive images and rich previews.",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/tsrgtm/media-library",
+    "keywords": [
+        "laravel",
+        "filament",
+        "filament-v5",
+        "media-library",
+        "media-manager",
+        "google-drive-workspace",
+        "tus-upload",
+        "resumable-upload",
+        "responsive-images",
+        "filament-media-picker",
+        "filament-form-field",
+        "polymorphic-media"
+    ],
+    "authors": [
+        {
+            "name": "Tusar Gautam",
+            "email": "mail@tusar.com.np",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/tsrgtm/media-library/issues",
+        "source": "https://github.com/tsrgtm/media-library"
+    },
+    "require": {
+        "php": "^8.3",
+        "illuminate/contracts": "^12.0|^13.0",
+        "illuminate/database": "^12.0|^13.0",
+        "illuminate/filesystem": "^12.0|^13.0",
+        "illuminate/support": "^12.0|^13.0",
+        "filament/filament": "^5.0",
+        "livewire/livewire": "^4.0",
+        "intervention/image": "^4.2",
+        "spatie/laravel-package-tools": "^1.18"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "orchestra/testbench": "^10.0|^11.0",
+        "pestphp/pest": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tsrgtm\\MediaLibrary\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tsrgtm\\MediaLibrary\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tsrgtm\\MediaLibrary\\MediaLibraryServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "format": "vendor/bin/pint"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}

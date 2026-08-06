@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="g_7z" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <path d="M 40 24 L 176 24 L 216 64 L 216 232 C 216 238.6 210.6 244 204 244 L 52 244 C 45.4 244 40 238.6 40 232 Z" fill="#FFFFFF"/>
+    <path d="M 176 24 L 216 64 L 184 64 C 179.6 64 176 60.4 176 56 Z" fill="#E2E8F0"/>
+  </g>
+  <path d="M 40 24 L 176 24 L 176 64 L 216 64 L 216 76 L 40 76 Z" fill="url(#g_7z)"/>
+  <text x="56" y="56" font-family="system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif" font-weight="900" font-size="20" fill="#FFFFFF" letter-spacing="1">7Z</text>
+  
+            <!-- Zipper Track & Slider Pull -->
+            <rect x="123" y="90" width="10" height="84" rx="3" fill="#D97706" opacity="0.3"/>
+            <rect x="110" y="96" width="12" height="6" rx="2" fill="#D97706"/>
+            <rect x="134" y="104" width="12" height="6" rx="2" fill="#D97706"/>
+            <rect x="110" y="112" width="12" height="6" rx="2" fill="#D97706"/>
+            <rect x="134" y="120" width="12" height="6" rx="2" fill="#D97706"/>
+            <rect x="110" y="128" width="12" height="6" rx="2" fill="#D97706"/>
+            <rect x="114" y="136" width="28" height="24" rx="5" fill="#D97706"/>
+            <circle cx="128" cy="148" r="5" fill="#FFFFFF"/>
+            
+  <text x="128" y="218" font-family="system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif" font-weight="700" font-size="11" fill="#64748B" text-anchor="middle" letter-spacing="1.5">7-ZIP ARCHIVE</text>
+</svg>

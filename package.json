@@ -1,0 +1,14 @@
+{
+  "name": "@tsrgtm/media-library-assets",
+  "private": true,
+  "dependencies": {
+    "docx-preview": "latest",
+    "dompurify": "latest",
+    "highlight.js": "latest",
+    "marked": "latest",
+    "pdfjs-dist": "latest",
+    "tus-js-client": "latest",
+    "video.js": "latest",
+    "xlsx": "latest"
+  }
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="g_gif" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <path d="M 40 24 L 176 24 L 216 64 L 216 232 C 216 238.6 210.6 244 204 244 L 52 244 C 45.4 244 40 238.6 40 232 Z" fill="#FFFFFF"/>
+    <path d="M 176 24 L 216 64 L 184 64 C 179.6 64 176 60.4 176 56 Z" fill="#E2E8F0"/>
+  </g>
+  <path d="M 40 24 L 176 24 L 176 64 L 216 64 L 216 76 L 40 76 Z" fill="url(#g_gif)"/>
+  <text x="56" y="56" font-family="system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif" font-weight="900" font-size="20" fill="#FFFFFF" letter-spacing="1">GIF</text>
+  
+            <!-- Picture Frame: Sun & Mountain -->
+            <circle cx="152" cy="115" r="14" fill="#2563EB" opacity="0.85"/>
+            <path d="M 76 168 L 116 118 L 144 150 L 164 128 L 188 168 Z" fill="#2563EB"/>
+            <rect x="70" y="94" width="116" height="84" rx="8" fill="none" stroke="#2563EB" stroke-width="4" stroke-dasharray="8 4" opacity="0.4"/>
+            
+  <text x="128" y="218" font-family="system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif" font-weight="700" font-size="11" fill="#64748B" text-anchor="middle" letter-spacing="1.5">ANIMATED GIF</text>
+</svg>
