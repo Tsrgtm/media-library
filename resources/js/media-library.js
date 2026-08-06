@@ -10,6 +10,14 @@ function mediaDrive(options) {
         media: [],
         currentFolder: null,
 
+        imageFallback(event, item) {
+            if (! event?.target) return;
+            const fallback = item?.fallback_url || item?.kind_placeholder_url || item?.placeholder_url || this.defaultPlaceholder || '/images/media-placeholders/file.svg';
+            if (event.target.src !== fallback) {
+                event.target.src = fallback;
+            }
+        },
+
         selected: [],
         selectionAnchor: null,
 

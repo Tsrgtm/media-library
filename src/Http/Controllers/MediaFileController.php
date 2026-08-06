@@ -97,7 +97,26 @@ class MediaFileController extends Controller
     ): StreamedResponse {
         $disk = Storage::disk($media->disk);
 
-        abort_unless($disk->exists($path), 404);
+        if (! $disk->exists($path) && filled($media->path) && $disk->exists($media->path)) {
+            $path = $media->path;
+        }
+
+        if (! $disk->exists($path)) {
+            $placeholder = public_path("images/media-placeholders/{$media->extension}.svg");
+            if (! file_exists($placeholder)) {
+                $placeholder = public_path('images/media-placeholders/file.svg');
+            }
+
+            if (file_exists($placeholder)) {
+                return response()->streamDownload(
+                    fn () => readfile($placeholder),
+                    'placeholder.svg',
+                    ['Content-Type' => 'image/svg+xml']
+                );
+            }
+
+            abort(404);
+        }
 
         return $disk->response(
             $path,

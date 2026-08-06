@@ -769,7 +769,11 @@ export class MediaPreviewManager {
 
         container.replaceChildren(pre);
 
-        hljs.highlightElement(code);
+        try {
+            hljs.highlightElement(code);
+        } catch {
+            // Ignore syntax highlighter errors on un-registered languages
+        }
         this.applyZoom(elements);
     }
 

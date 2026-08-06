@@ -58,6 +58,14 @@ export function mediaPicker(options) {
         inputAccept: options.inputAccept ?? '',
 
         modalOpen: false,
+
+        imageFallback(event, item) {
+            if (! event?.target) return;
+            const fallback = item?.fallback_url || item?.kind_placeholder_url || item?.placeholder_url || '/images/media-placeholders/file.svg';
+            if (event.target.src !== fallback) {
+                event.target.src = fallback;
+            }
+        },
         loading: false,
         selectedItems: [],
         draftItems: [],
