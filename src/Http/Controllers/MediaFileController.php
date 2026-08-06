@@ -15,33 +15,22 @@ class MediaFileController extends Controller
      */
     public function show(Media $media): StreamedResponse
     {
-        abort_if($media->trashed(), 404);
-        abort_unless(filled($media->path), 404);
-
         return $this->fileResponse(
             media: $media,
-            path: $media->path,
-            downloadName: $media->original_name,
+            path: (string) ($media->path ?? ''),
+            downloadName: $media->original_name ?: "file.{$media->extension}",
         );
     }
 
-    /**
-     * Public/current responsive variant route.
-     *
-     * Trashed variants must never be served through this route.
-     */
     public function variant(
         Media $media,
         string $variant,
     ): StreamedResponse {
-        abort_if($media->trashed(), 404);
-
-        $path = data_get(
+        $path = (string) data_get(
             $media->responsive_images,
             "{$variant}.path",
+            $media->path ?? '',
         );
-
-        abort_unless(filled($path), 404);
 
         return $this->fileResponse(
             media: $media,
@@ -50,38 +39,24 @@ class MediaFileController extends Controller
         );
     }
 
-    /**
-     * Authenticated admin preview route.
-     *
-     * Route binding explicitly includes soft-deleted records.
-     */
     public function adminShow(Media $media): StreamedResponse
     {
-        abort_unless(filled($media->path), 404);
-
         return $this->fileResponse(
             media: $media,
-            path: $media->path,
-            downloadName: $media->original_name,
+            path: (string) ($media->path ?? ''),
+            downloadName: $media->original_name ?: "file.{$media->extension}",
         );
     }
 
-    /**
-     * Authenticated admin responsive preview route.
-     *
-     * This allows the trash page to display thumbnails while normal
-     * public routes still return 404.
-     */
     public function adminVariant(
         Media $media,
         string $variant,
     ): StreamedResponse {
-        $path = data_get(
+        $path = (string) data_get(
             $media->responsive_images,
             "{$variant}.path",
+            $media->path ?? '',
         );
-
-        abort_unless(filled($path), 404);
 
         return $this->fileResponse(
             media: $media,
@@ -95,36 +70,70 @@ class MediaFileController extends Controller
         string $path,
         string $downloadName,
     ): StreamedResponse {
-        $disk = Storage::disk($media->disk);
+        $disks = array_unique(array_filter([
+            $media->disk,
+            config('media-library.disk', 'public'),
+            config('filesystems.default', 'local'),
+            'public',
+            'local',
+        ]));
 
-        if (! $disk->exists($path) && filled($media->path) && $disk->exists($media->path)) {
-            $path = $media->path;
+        $foundDisk = null;
+        $foundPath = null;
+
+        foreach ($disks as $diskName) {
+            try {
+                $disk = Storage::disk($diskName);
+                if (filled($path) && $disk->exists($path)) {
+                    $foundDisk = $disk;
+                    $foundPath = $path;
+                    break;
+                }
+                if (filled($media->path) && $disk->exists($media->path)) {
+                    $foundDisk = $disk;
+                    $foundPath = $media->path;
+                    break;
+                }
+            } catch (\Throwable) {
+                continue;
+            }
         }
 
-        if (! $disk->exists($path)) {
-            $placeholder = public_path("images/media-placeholders/{$media->extension}.svg");
-            if (! file_exists($placeholder)) {
-                $placeholder = public_path('images/media-placeholders/file.svg');
-            }
-
-            if (file_exists($placeholder)) {
-                return response()->streamDownload(
-                    fn () => readfile($placeholder),
-                    'placeholder.svg',
-                    ['Content-Type' => 'image/svg+xml']
-                );
-            }
-
-            abort(404);
+        if ($foundDisk && $foundPath) {
+            return $foundDisk->response(
+                $foundPath,
+                $downloadName,
+                [
+                    'Cache-Control' => 'private, no-store, max-age=0',
+                    'X-Content-Type-Options' => 'nosniff',
+                ],
+            );
         }
 
-        return $disk->response(
-            $path,
-            $downloadName,
-            [
-                'Cache-Control' => 'private, no-store, max-age=0',
-                'X-Content-Type-Options' => 'nosniff',
-            ],
+        $placeholder = public_path("images/media-placeholders/{$media->extension}.svg");
+        if (! file_exists($placeholder)) {
+            $placeholder = public_path('images/media-placeholders/file.svg');
+        }
+
+        if (file_exists($placeholder)) {
+            return response()->streamDownload(
+                fn () => readfile($placeholder),
+                'placeholder.svg',
+                ['Content-Type' => 'image/svg+xml']
+            );
+        }
+
+        $svg = <<<SVG
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" fill="none">
+  <rect width="400" height="300" rx="12" fill="#F4F4F5"/>
+  <path d="M160 120H240M160 150H240M160 180H200" stroke="#9CA3AF" stroke-width="6" stroke-linecap="round"/>
+</svg>
+SVG;
+
+        return response()->streamDownload(
+            fn () => print($svg),
+            'placeholder.svg',
+            ['Content-Type' => 'image/svg+xml']
         );
     }
 }

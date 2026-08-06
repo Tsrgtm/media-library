@@ -457,13 +457,13 @@ class MediaLibraryController extends Controller
             'extension' => $media->extension,
             'width' => $media->width,
             'height' => $media->height,
-            'thumbnail_url' => $this->thumbnailUrl($media),
-            'preview_url' => $this->previewUrl($media),
+            'thumbnail_url' => $this->thumbnailUrl($media) ?: $media->kind_placeholder_url,
+            'preview_url' => $this->previewUrl($media) ?: route('media.library.files.show', ['media' => $media->uuid]),
             'fallback_url' => $media->kind_placeholder_url,
             'thumbnail_mode' => $media->kind->value === 'image'
                 ? 'cover'
                 : 'contain',
-            'url' => $media->url,
+            'url' => $media->url ?: route('media.library.files.show', ['media' => $media->uuid]),
             'folder_id' => $media->folder_id,
             'deleted_at' => $media->deleted_at?->toIso8601String(),
             'tags' => $media->tags

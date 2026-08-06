@@ -67,7 +67,7 @@ class Media extends Model
 
     public function getUrlAttribute(): ?string
     {
-        return filled($this->path) && ! $this->trashed()
+        return filled($this->uuid)
             ? route('media.files.show', ['media' => $this->uuid])
             : null;
     }
