@@ -21,7 +21,8 @@ A high-performance, enterprise-grade Laravel media library and Google Drive-styl
 - [Zero Schema Hassle](#zero-schema-hassle)
 - [Requirements](#requirements)
 - [Installation & Setup](#installation--setup)
-- [Filament Panel Integration](#filament-panel-integration)
+- [Tailwind CSS & Styling Setup](#tailwind-css--styling-setup)
+- [Filament Panel & Plugin Customization](#filament-panel--plugin-customization)
 - [Model Configuration (`HasMedia` Trait)](#model-configuration-hasmedia-trait)
   - [1. Adding Trait to Models](#1-adding-trait-to-models)
   - [2. Attaching, Syncing, and Detaching Media](#2-attaching-syncing-and-detaching-media)
@@ -46,6 +47,8 @@ A high-performance, enterprise-grade Laravel media library and Google Drive-styl
 
 - 🔗 **Zero Database Schema Hassle**: Attach single or multiple media items to any model using polymorphic relations — **no database columns, foreign keys, or migrations needed on your tables**.
 - 📁 **Google Drive-Style Workspace**: Full-page Filament 5 panel interface with grid/list view toggles, marquee item selection, drag-and-drop folder moving, and path breadcrumbs.
+- ⚙️ **Fully Customizable Plugin**: Easily customize navigation icon, menu group, sort order, page label, and URL slugs directly on the plugin instance.
+- 🎨 **Self-Sufficient CSS & Tailwind v4**: Includes standalone Tailwind CSS directives so component UI renders cleanly out-of-the-box.
 - ⚡ **TUS Resumable Uploads**: Multi-file chunked upload engine supporting up to 4 concurrent streams with auto-resume on network failure.
 - 🖼️ **Responsive Image Engine**: Automatic WebP generation with configurable width breakpoints (`thumbnail`, `small`, `medium`, `large`).
 - 🚀 **Static Placeholder Caching**: In-memory memoization of SVG/PNG placeholder URLs to eliminate repetitive config and asset resolution during bulk media serialization.
@@ -53,7 +56,6 @@ A high-performance, enterprise-grade Laravel media library and Google Drive-styl
 - ♻️ **Trash Bin & Soft Deletes**: Two-stage deletion with restore and permanent force-delete capabilities.
 - 🔄 **In-Place File Replacement**: Update media contents while preserving original URLs and database model relationships.
 - 👁️ **Rich Media Lightbox Previews**: Built-in visualizers for Images, Videos, Audio, PDF, DOCX, XLSX, Markdown, and Source Code syntax highlighting.
-- 🔒 **Secure Authorization**: Authenticated admin previews for trashed media while public routes reject soft-deleted assets.
 
 ---
 
@@ -134,22 +136,51 @@ npm run build
 
 ---
 
-## Filament Panel Integration
+## Tailwind CSS & Styling Setup
 
-Register the `MediaLibraryPlugin` inside your Filament Panel Provider (e.g., `app/Providers/Filament/AdminPanelProvider.php`):
+### Self-Sufficient CSS (Zero Configuration)
+The package ships with self-sufficient CSS in `resources/css/media-library.css` containing standalone Tailwind CSS directives. Component styles render cleanly out of the box without requiring manual CSS edits.
+
+### Custom Filament Theme Configuration
+If you are compiling a custom Filament Tailwind CSS theme (e.g. `resources/css/filament/admin/theme.css`), add the package `@source` directives so Vite scans package views during build:
+
+```css
+@import "tailwindcss";
+@import "../../../../vendor/filament/filament/resources/css/theme.css";
+
+/* Include Tsrgtm Media Library Package Sources */
+@source '../../../../vendor/tsrgtm/media-library/resources/views/**/*.blade.php';
+@source '../../../../vendor/tsrgtm/media-library/src/**/*.php';
+@source '../../../../vendor/tsrgtm/media-library/resources/js/**/*.js';
+```
+
+---
+
+## Filament Panel & Plugin Customization
+
+Register the `MediaLibraryPlugin` inside your Filament Panel Provider (e.g., `app/Providers/Filament/AdminPanelProvider.php`).
+
+You can customize navigation group, icon, label, sort position, and URL slug directly on the plugin builder:
 
 ```php
+use Filament\Support\Icons\Heroicon;
 use Tsrgtm\MediaLibrary\MediaLibraryPlugin;
 
 public function panel(Panel $panel): Panel
 {
     return $panel
         // ... other panel configuration
-        ->plugin(MediaLibraryPlugin::make());
+        ->plugin(
+            MediaLibraryPlugin::make()
+                ->navigationGroup('Content')              // Set navigation group (default: 'Content')
+                ->navigationIcon(Heroicon::OutlinedPhoto) // Set custom menu icon
+                ->navigationLabel('Media Manager')        // Set custom menu title (default: 'Media Library')
+                ->navigationSort(15)                      // Set custom menu position (default: 20)
+                ->slug('media-manager')                   // Set custom URL slug (default: 'media-library')
+                ->shouldRegisterNavigation(true)          // Conditionally show in navigation menu
+        );
 }
 ```
-
-The **Media Library** will automatically appear under the **Content** navigation group in your Filament admin panel.
 
 ---
 

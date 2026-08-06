@@ -1,3 +1,9 @@
+@import "tailwindcss";
+
+@source "../views/**/*.blade.php";
+@source "../js/**/*.js";
+@source "../../src/**/*.php";
+
 .media-drive-shell,
 .media-drive-shell:focus,
 .media-drive-shell:focus-visible,

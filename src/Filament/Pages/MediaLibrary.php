@@ -3,22 +3,63 @@
 namespace Tsrgtm\MediaLibrary\Filament\Pages;
 
 use BackedEnum;
-use Filament\Support\Icons\Heroicon;
 use Tsrgtm\MediaLibrary\Filament\Pages\MediaLibrary\BaseMediaLibraryPage;
+use Tsrgtm\MediaLibrary\MediaLibraryPlugin;
 use UnitEnum;
 
 class MediaLibrary extends BaseMediaLibraryPage
 {
-    protected static string|BackedEnum|null $navigationIcon =
-        Heroicon::OutlinedPhoto;
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        try {
+            return MediaLibraryPlugin::get()->getNavigationGroup();
+        } catch (\Throwable) {
+            return 'Content';
+        }
+    }
 
-    protected static string|UnitEnum|null $navigationGroup =
-        'Content';
+    public static function getNavigationIcon(): string|BackedEnum|null
+    {
+        try {
+            return MediaLibraryPlugin::get()->getNavigationIcon();
+        } catch (\Throwable) {
+            return parent::getNavigationIcon();
+        }
+    }
 
-    protected static ?string $navigationLabel =
-        'Media Library';
+    public static function getNavigationLabel(): string
+    {
+        try {
+            return MediaLibraryPlugin::get()->getNavigationLabel() ?? 'Media Library';
+        } catch (\Throwable) {
+            return 'Media Library';
+        }
+    }
 
-    protected static ?int $navigationSort = 20;
+    public static function getNavigationSort(): ?int
+    {
+        try {
+            return MediaLibraryPlugin::get()->getNavigationSort();
+        } catch (\Throwable) {
+            return 20;
+        }
+    }
 
-    protected static ?string $slug = 'media-library';
+    public static function getSlug(): string
+    {
+        try {
+            return MediaLibraryPlugin::get()->getSlug() ?? 'media-library';
+        } catch (\Throwable) {
+            return 'media-library';
+        }
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        try {
+            return MediaLibraryPlugin::get()->isNavigationRegistered();
+        } catch (\Throwable) {
+            return true;
+        }
+    }
 }

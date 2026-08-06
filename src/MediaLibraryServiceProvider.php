@@ -2,6 +2,8 @@
 
 namespace Tsrgtm\MediaLibrary;
 
+use Filament\Support\Assets\Css;
+use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\Facades\Blade;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -37,8 +39,15 @@ class MediaLibraryServiceProvider extends PackageServiceProvider
 
         $this->app->register(MediaSqliteServiceProvider::class);
 
+        if (class_exists(FilamentAsset::class)) {
+            FilamentAsset::register([
+                Css::make('media-library', __DIR__.'/../resources/css/media-library.css'),
+            ], 'tsrgtm/media-library');
+        }
+
         $this->publishes([
             __DIR__.'/../resources/images/media-placeholders' => public_path('images/media-placeholders'),
+            __DIR__.'/../resources/css/media-library.css' => public_path('css/vendor/media-library/media-library.css'),
         ], 'media-library-assets');
     }
 }
