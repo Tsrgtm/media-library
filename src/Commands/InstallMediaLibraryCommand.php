@@ -65,8 +65,19 @@ class InstallMediaLibraryCommand extends Command
         ];
 
         foreach ($targets as $from => $to) {
-            if ($files->exists($to) && ! $this->option('force')) {
-                $this->components->warn("Preserved existing file: {$to}");
+            if (! $files->exists($from)) {
+                continue;
+            }
+
+            $exists = $files->exists($to);
+
+            if ($exists && ! $this->option('force')) {
+                if (sha1_file($from) !== sha1_file($to)) {
+                    $files->copy($from, $to);
+                    $this->components->task("Updated modified file: {$to}");
+                } else {
+                    $this->components->task("Preserved current file: {$to}");
+                }
 
                 continue;
             }

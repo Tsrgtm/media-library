@@ -21,6 +21,10 @@ A high-performance, enterprise-grade Laravel media library and Google Drive-styl
 - [Zero Schema Hassle](#zero-schema-hassle)
 - [Requirements](#requirements)
 - [Installation & Setup](#installation--setup)
+- [Package Management Commands](#package-management-commands)
+  - [1. Installing the Package (`media-library:install`)](#1-installing-the-package-media-libraryinstall)
+  - [2. Updating Assets & Migrations (`media-library:update`)](#2-updating-assets--migrations-media-libraryupdate)
+  - [3. Uninstalling & Reverting Changes (`media-library:uninstall`)](#3-uninstalling--reverting-changes-media-libraryuninstall)
 - [Tailwind CSS & Styling Setup](#tailwind-css--styling-setup)
 - [Filament Panel & Plugin Customization](#filament-panel--plugin-customization)
 - [Model Configuration (`HasMedia` Trait)](#model-configuration-hasmedia-trait)
@@ -46,6 +50,7 @@ A high-performance, enterprise-grade Laravel media library and Google Drive-styl
 ## Key Features
 
 - 🔗 **Zero Database Schema Hassle**: Attach single or multiple media items to any model using polymorphic relations — **no database columns, foreign keys, or migrations needed on your tables**.
+- 🛠️ **Complete Lifecycle Commands**: Includes `media-library:install`, `media-library:update`, and `media-library:uninstall` to install, upgrade, or cleanly revert all changes without errors.
 - 📁 **Google Drive-Style Workspace**: Full-page Filament 5 panel interface with grid/list view toggles, marquee item selection, drag-and-drop folder moving, and path breadcrumbs.
 - ⚙️ **Fully Customizable Plugin**: Easily customize navigation icon, menu group, sort order, page label, and URL slugs directly on the plugin instance.
 - 🎨 **Self-Sufficient CSS & Tailwind v4**: Includes standalone Tailwind CSS directives so component UI renders cleanly out-of-the-box.
@@ -132,6 +137,57 @@ php artisan migrate
 
 ```bash
 npm run build
+```
+
+---
+
+## Package Management Commands
+
+### 1. Installing the Package (`media-library:install`)
+
+```bash
+php artisan media-library:install
+```
+
+*Options:*
+- `--force`: Overwrite existing published frontend source files.
+- `--no-npm`: Skip automatic NPM dependency installation.
+- `--panel-provider=path`: Custom path to your Filament panel provider (default: `app/Providers/Filament/AdminPanelProvider.php`).
+
+### 2. Updating Assets & Migrations (`media-library:update`)
+
+When upgrading `tsrgtm/media-library` to a new release, run the update command to sync updated JS/CSS assets, replace modified files, and run pending database migrations:
+
+```bash
+php artisan media-library:update
+```
+
+*Options:*
+- `--force`: Force overwrite all published frontend assets and configuration files.
+
+### 3. Uninstalling & Reverting Changes (`media-library:uninstall`)
+
+To completely revert all changes made by the package cleanly without leaving orphaned code or throwing errors:
+
+```bash
+php artisan media-library:uninstall
+```
+
+This command automatically:
+- Unregisters `MediaLibraryPlugin` from your Filament Panel Provider.
+- Reverts patches in `resources/js/app.js` and Filament `theme.css`.
+- Deletes published JS/CSS vendor assets and placeholder images.
+- Drops package database tables (`media`, `media_folders`, `mediables`, `media_tags`, `media_upload_sessions`) and deletes `config/media-library.php`.
+- Clears optimization caches.
+
+*Options:*
+- `--keep-data`: Reverts code integration and published assets while preserving database tables and uploaded files.
+- `--force`: Runs uninstall without interactive prompts.
+
+After running uninstall, complete package removal via Composer:
+
+```bash
+composer remove tsrgtm/media-library
 ```
 
 ---

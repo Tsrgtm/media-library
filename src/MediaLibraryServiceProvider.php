@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Blade;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Tsrgtm\MediaLibrary\Commands\InstallMediaLibraryCommand;
+use Tsrgtm\MediaLibrary\Commands\UninstallMediaLibraryCommand;
+use Tsrgtm\MediaLibrary\Commands\UpdateMediaLibraryCommand;
 use Tsrgtm\MediaLibrary\Providers\MediaSqliteServiceProvider;
 
 class MediaLibraryServiceProvider extends PackageServiceProvider
@@ -27,7 +29,11 @@ class MediaLibraryServiceProvider extends PackageServiceProvider
                 '2026_08_05_000005_create_media_upload_sessions_table',
                 '2026_08_06_000006_add_soft_deletes_to_media_folders_table',
             ])
-            ->hasCommand(InstallMediaLibraryCommand::class);
+            ->hasCommands([
+                InstallMediaLibraryCommand::class,
+                UpdateMediaLibraryCommand::class,
+                UninstallMediaLibraryCommand::class,
+            ]);
     }
 
     public function packageBooted(): void
